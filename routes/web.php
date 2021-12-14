@@ -13,9 +13,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
+
+Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function()
+{
+    Route::group(['middleware'=>'preventBackHistory'],function(){
+        Auth::routes();
+    });
+
+
+
+    Route::group(['middleware'=>['auth','preventBackHistory']],function()
+    {
+        Route::get('/', 'HomeController@index')->name('home');
+        Route::resource('grades','Dashboard\GradeController');
+        Route::get('/empty', function () {
+            return view('empty');
+        });
+    });
+
+
 });
-Route::get('/empty', function () {
-    return view('empty');
-});
+
+
