@@ -3,8 +3,8 @@
         <nav class="admin-header navbar navbar-default col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <!-- logo -->
             <div class="text-left navbar-brand-wrapper">
-                <a class="navbar-brand brand-logo" href="{{route('home')}}"><img src="{{asset('assets/images/logo-dark.png')}}" alt=""></a>
-                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset('assets/images/logo-icon-dark.png')}}"
+                <a class="navbar-brand brand-logo" href="{{route('home')}}"><img src="{{asset('assets/images/logo-dark.png')}}" alt="">AL-NAHHAS</a>
+                <a class="navbar-brand brand-logo-mini" href="{{route('home')}}"><img src="{{asset('assets/images/logo-icon-dark.png')}}"
                         alt=""></a>
             </div>
             <!-- Top bar left -->
@@ -130,11 +130,19 @@
                             </li>
                         @endguest--}}
                     <div class="dropdown-menu dropdown-menu-right">
+                        @guest
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ route('login') }}"><i class="text-secondary ti-reload"></i>{{ __('Login') }}</a>
+                            @if (Route::has('register'))
+                            <a class="dropdown-item" href="{{ route('register') }}"><i class="text-success ti-email"></i>{{ __('Register') }}</a>
+                            @endif
+                        @else
+
                         <div class="dropdown-header">
                             <div class="media">
                                 <div class="media-body">
-                                    <h5 class="mt-0 mb-0">Michael Bean</h5>
-                                    <span>michael-bean@mail.com</span>
+                                    <h5 class="mt-0 mb-0"> {{ Auth::user()->name }}</h5>
+                                    <span> {{ Auth::user()->email }}</span>
                                 </div>
                             </div>
                         </div>
@@ -146,34 +154,13 @@
                                 class="badge badge-info">6</span> </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#"><i class="text-info ti-settings"></i>Settings</a>
-                        <a class="dropdown-item" href="#"><i class="text-danger ti-unlock"></i>Logout</a>
-                @guest
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                    </li>
-                    @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                    @endif
-                @else
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->name }}
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"  onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();"><i class="text-danger ti-unlock"></i>  {{ __('Logout') }}</a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
-                        </div>
-                    </li>
+
                     @endguest
                     </div>
                 </li>

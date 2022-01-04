@@ -1,5 +1,7 @@
 <!-- Title -->
-<title>@yield("title")</title>
+<title>
+    AL-NAHHAS |@yield("title")
+</title>
 
 <!-- Favicon -->
 <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.ico') }}" type="image/x-icon" />
@@ -10,6 +12,11 @@
 @yield('css')
 <!--- Style css -->
 <link href="{{ URL::asset('assets/css/style.css') }}" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<link href="{{ URL::asset('css/wizard.css') }}" rel="stylesheet" id="bootstrap-css">
+
+
+@toastr_css
 
 @livewireStyles
 

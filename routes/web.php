@@ -24,8 +24,33 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),'middleware' => [ 'lo
 
     Route::group(['middleware'=>['auth','preventBackHistory']],function()
     {
+        //########### landing ##################
         Route::get('/', 'HomeController@index')->name('home');
-        Route::resource('grades','Dashboard\GradeController');
+
+        //########### mainData ##################
+        Route::group(['namespace'=>'MainData'],function(){
+            //stages
+            Route::resource('stages','StageController');
+
+            //grades
+            Route::resource('grades','GradeController');
+
+            //classroom
+            Route::resource('classrooms','ClassroomController');
+            Route::post('classrooms/delete_selected','ClassroomController@delete_selected')->name('classrooms.delete_selected');
+
+        });
+
+        //########### HrData ##################
+        Route::group(['namespace'=>'HrData'],function(){
+            //parents
+            Route::get('parents','StudentparentsController@index')->name('parents.index');
+        });
+        /*
+        Route::group(['namespace'=>''],function(){
+
+        });
+        */
         Route::get('/empty', function () {
             return view('empty');
         });
