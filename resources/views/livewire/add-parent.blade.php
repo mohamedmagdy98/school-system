@@ -3,10 +3,10 @@
 
     @if($parents_table)
         <div >
-             <button class="btn btn-success" wire:click="add_parent_button">Add parents</button>
+             <button class="btn btn-success" wire:click="add_parent_button">{{__('layout.parents_add')}}</button>
         </div>
 
-        <input wire:model="search" type="search" class="form-control" placeholder="Search posts by title...">
+        <input wire:model="search" type="search" class="form-control" placeholder="{{__('layout.search')}}">
 
         <div class="table-responsive" >
 
@@ -15,13 +15,13 @@
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">id</th>
-                    <th scope="col">Father name</th>
-                    <th scope="col">Father national id</th>
-                    <th scope="col">mother name</th>
-                    <th scope="col">mother national id</th>
-                    <th scope="col">email</th>
-                    <th scope="col">processes</th>
+                    <th scope="col">{{__('parents.id')}}</th>
+                    <th scope="col">{{__('parents.father_name')}}</th>
+                    <th scope="col">{{__('parents.father_national_id')}}</th>
+                    <th scope="col">{{__('parents.mother_name')}}</th>
+                    <th scope="col">{{__('parents.mother_national_id')}}</th>
+                    <th scope="col">{{__('parents.email')}}</th>
+                    <th scope="col">{{__('parents.process')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,16 +38,16 @@
                     <td>{{$parent->mother_national_id}}</td>
                     <td>{{$parent->email}}</td>
                     <td> <button type="button" wire:click="details_mode_on({{$parent->id}})" class="btn btn-info btn-sm m-1"
-                                 title=" {{ __('classrooms.delete_classroom') }}"><i
+                                 title=" {{ __('parents.show') }}"><i
                                 class="fa fa-search-plus"></i></button>
                         </button>
                         <button type="button" wire:click="update_mode_on({{$parent->id}})" class="btn btn-warning btn-sm m-1"
-                                title=" {{ __('classrooms.edit_classroom') }}"><i class="fa fa-edit"></i>
+                                title=" {{ __('parents.edit') }}"><i class="fa fa-edit"></i>
                         </button>
 
                         <button type="button" data-toggle="modal"
                                 data-target="#delete{{ $parent->id }}" class="btn btn-danger btn-sm m-1"
-                                title=" {{ __('classrooms.delete_classroom') }}"><i
+                                title=" {{ __('parents.delete') }}"><i
                                 class="fa fa-trash"></i></button></td>
 
                 </tr>
@@ -58,7 +58,7 @@
                                 <div class="modal-header">
                                     <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title"
                                         id="exampleModalLabel">
-                                        {{ __('classrooms.delete_classrooms') }}
+                                        {{ __('parents.delete') }}
                                     </h5>
                                     <button type="button" class="close" data-dismiss="modal"
                                             aria-label="Close">
@@ -67,9 +67,9 @@
                                 </div>
                                 <div class="modal-body">
 
-                                        {{ __('classrooms.delete_parents_warning') }}
-
-                                    parents id: {{$parent->id}}
+                                        {{ __('parents.delete_msg') }}
+                                    <br>
+                                    {{__('parents.id')}}: {{$parent->id}}
 
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
@@ -95,7 +95,7 @@
           <br>
           {{ $parents->links() }}</div>
     @elseif($parents_details)
-        <div > <button class="btn btn-danger" wire:click="back_to_table">back_to_table</button></div>
+        <div > <button class="btn btn-danger" wire:click="back_to_table">{{__('parents.back_to_table')}}</button></div>
         <div class="card">
             <div class="card-header"><h5 class="card-title">{{__('parents.details')}}</h5></div>
             <div class="card-body">
@@ -146,7 +146,7 @@
                 title=" {{ __('classrooms.edit_classroom') }}">{{__('parents.edit')}}
         </button>
     @else
-        <div > <button class="btn btn-danger" wire:click="back_to_table">back_to_table</button></div>
+        <div > <button class="btn btn-danger" wire:click="back_to_table">{{__('parents.back_to_table')}}</button></div>
 
     <div class="stepwizard" aria-autocomplete="off">
         <div class="stepwizard-row setup-panel">
@@ -179,9 +179,13 @@
         @if ($currentStep != 3)
             <div style="display: none" class="row setup-content" id="step-3">
                 @endif
-                <div class="col-xs-12">
-                    <div class="col-md-12">
-                        <h3 style="font-family: 'Cairo', sans-serif;">{{__('parents.confirm_msg') }}</h3><br>
+
+                <div class="col-md-12">
+                    <div class="col-md-12 align-content-center">
+                        <br>
+                        <br>
+                        <br>
+                        <h2 style="font-family: 'Cairo', sans-serif;">{{__('parents.confirm_msg') }}</h2><br>
                         <button class="btn btn-danger btn-sm nextBtn btn-lg pull-right" type="button"
                                 wire:click="back(2)">{{__('parents.back') }}</button>
                         <button class="btn btn-success btn-sm btn-lg pull-right" wire:click="submitForm"

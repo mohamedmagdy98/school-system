@@ -16,5 +16,5 @@ return [
     'language'=>'language',
     'arabic'=>'arabic',
     'english'=>'english',
-
+    'search'=>'search...'
 ];

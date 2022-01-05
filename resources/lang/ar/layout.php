@@ -16,6 +16,6 @@ return [
     'language'=>'اللغة',
     'arabic'=>'العربية',
     'english'=>'الانجليزية',
-
+    'search'=>'بحث...',
 
 ];

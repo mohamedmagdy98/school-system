@@ -50,10 +50,12 @@ class AddParent extends Component
             'statuses' => Maritalstatus::all(),
             'parents'=>Studentparent::where('id', 'like', '%'.$this->search.'%')
                 ->orWhere('email', 'like', '%'.$this->search.'%')
-                ->orWhere('father_name', 'like', '%'.$this->search.'%')
+                ->orWhere('father_name->ar', 'like', '%'.$this->search.'%')
+                ->orWhere('father_name->en', 'like', '%'.$this->search.'%')
                 ->orWhere('father_national_id', 'like', '%'.$this->search.'%')
                 ->orWhere('email', 'like', '%'.$this->search.'%')
-                ->orWhere('mother_name', 'like', '%'.$this->search.'%')
+                ->orWhere('mother_name->ar', 'like', '%'.$this->search.'%')
+                ->orWhere('mother_name->en', 'like', '%'.$this->search.'%')
                 ->orWhere('mother_national_id', 'like', '%'.$this->search.'%')
                 ->paginate(10),
 
@@ -108,12 +110,7 @@ class AddParent extends Component
     public function firstStepSubmit()
     {
 
-        $this->validate([
-            'password' => 'required',
-            'father_name_ar' => 'required',
-            'email' => 'required',
-            'father_name_en' => 'required',
-        ]);
+        $this->validate($this->rules_first());
         $this->currentStep = 2;
 
     }
@@ -121,6 +118,7 @@ class AddParent extends Component
     //secondStepSubmit
     public function secondStepSubmit()
     {
+        $this->validate($this->rules_second());
 
         $this->currentStep = 3;
     }
@@ -156,19 +154,14 @@ class AddParent extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName, [
-            'password' => 'required',
-            'father_name_ar' => 'required',
-            'email' => 'required',
-            'father_name_en' => 'required',
-            'mother_address'=>'required'
-
+           'email'=>'required'
         ]);
     }
 //######################## functionality ####################################################
     //reset
     public function resetFields()
     {
-        $this->email=''; $this->password=''; $this->parent_id;
+        $this->email=''; $this->password=''; $this->parent_id='';
         $this->father_name_ar='';       $this->father_name_en='';        $this->father_job='';       $this->father_status='';
         $this->father_national_id='';       $this->father_phone='';       $this->father_nationality='';
         $this->father_address='';
@@ -176,6 +169,8 @@ class AddParent extends Component
         $this->mother_national_id='';        $this->mother_phone='';        $this->mother_nationality='';
         $this->mother_address='';
         $this->currentStep=1;            $this->update=false; $this->parents_details=false;
+        $this->resetErrorBag();
+        $this->resetValidation();
 
     }
    //create parent
@@ -269,7 +264,6 @@ class AddParent extends Component
             $this->father_address=$parent->father_address;
             $this->mother_name_ar=$parent->getTranslation('mother_name', 'ar');
             $this->mother_name_en=$parent->getTranslation('mother_name', 'en');
-
             $this->mother_national_id=$parent->mother_national_id;
             $this->mother_phone=$parent->mother_phone;
             $this->mother_address=$parent->mother_address;
@@ -301,6 +295,34 @@ class AddParent extends Component
 
     }
 
+    public function rules_first()
+    {
+
+        return [
+            'email' => 'required|regex:/^[a-zA-Z0-9\-\_]+\@[a-zA-Z0-9]+\.[a-z0-9]+[\.a-z0-9]+$/u|unique:App\Models\Studentparent,email,'.$this->parent_id,
+            'password' => 'required|between:8,20',
+            'father_name_ar' => 'required|regex:/^[ء-ي\s]+$/u|max:40',
+            'father_name_en' => 'required|regex:/^[\D\s]+$/u|max:40',
+            'father_national_id' => 'required|digits:14|unique:App\Models\Studentparent,father_national_id,'.$this->parent_id,
+            'father_address' => 'required',
+            'father_nationality' => 'required',
+            'father_job' => 'required',
+            'father_status' => 'required',
+            'father_phone' => ['regex:/^\++\d{1,2}+\d{9,10}$|^[0]+\d{10}$/u','required'],
+        ];
+    }
+    public function rules_second()
+    {
+        return [
+            'mother_name_ar'=>'required|regex:/^[ء-ي\s]+$/u|max:40',
+            'mother_name_en'=>'required|regex:/^[\D\s]+$/u|max:40',
+            'mother_national_id'=>'required|digits:14|unique:App\Models\Studentparent,mother_national_id,'.$this->parent_id,
+            'mother_nationality'=>'required',
+            'mother_job'=>'required',
+            'mother_status'=>'required',
+            'mother_phone'=>['regex:/^\++\d{1,2}+\d{9,10}$|^[0]+\d{10}$/u','required'],
+        ];
+    }
 
 }
 
